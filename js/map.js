@@ -2,7 +2,7 @@
 
 // 1. Создание массива 8 сгенерированных объектов
 
-var advertisements = [];
+var advertisementList = [];
 var ADV_QUANTITY = 8;
 var TITLE_LIST = [
   'Большая уютная квартира',
@@ -58,7 +58,7 @@ var generatePhotosList = function () {
 var generateAdv = function () {
   var result = [];
   for (var i = 0; i < ADV_QUANTITY; i++) {
-    var xCoordinator = generateRandomInteger(1, 1200);
+    var xCoordinator = generateRandomInteger(100, 1100);
     var yCoordinator = generateRandomInteger(130, 630);
     result[i] = {
       author: {
@@ -86,8 +86,6 @@ var generateAdv = function () {
   return result;
 };
 
-advertisements = generateAdv();
-
 // 2. Класс .map--faded у блока .map удален
 
 var map = document.querySelector('.map');
@@ -108,7 +106,7 @@ var generatePin = function (advertisement, template) {
 
 // 4. Отрисовка меток в блоке карты
 
-var renderPins = function () {
+var renderPins = function (advertisements) {
   var template = document.querySelector('#pin');
   var mapPins = document.querySelector('.map__pins');
   for (var i = 0; i < advertisements.length; i++) {
@@ -117,7 +115,6 @@ var renderPins = function () {
   }
 };
 
-renderPins();
 
 // 5. Создание карточки объявления
 
@@ -145,7 +142,7 @@ var generateAdvCard = function (advertisement, template) {
   var features = cardInfo.querySelector('.popup__features');
   for (var i = 0; i < FEATURES.length; i++) {
     if (advertisement.offer.features.indexOf(FEATURES[i]) === -1) {
-      var featuresItem = features.children[i];
+      var featuresItem = features.querySelector('.popup__feature--' + FEATURES[i]);
       features.removeChild(featuresItem);
     }
   }
@@ -170,7 +167,7 @@ var generateAdvCard = function (advertisement, template) {
 };
 
 
-var renderAdvCard = function () {
+var renderAdvCard = function (advertisements) {
   var templateOfAdvCard = document.querySelector('#card');
   var mapAdvCard = document.querySelector('.map');
   var containerBefore = document.querySelector('.map__filters-container');
@@ -178,4 +175,6 @@ var renderAdvCard = function () {
   mapAdvCard.insertBefore(advCard, containerBefore);
 };
 
-renderAdvCard();
+advertisementList = generateAdv();
+renderPins(advertisementList);
+renderAdvCard(advertisementList);
