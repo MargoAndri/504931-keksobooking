@@ -88,8 +88,8 @@ var generateAdv = function () {
 
 // 2. Класс .map--faded у блока .map удален
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+// var map = document.querySelector('.map');
+// map.classList.remove('map--faded');
 
 // 3. Создание DOM - элемента, соответствующие меткам на карте
 
@@ -111,6 +111,7 @@ var renderPins = function (advertisements) {
   var mapPins = document.querySelector('.map__pins');
   for (var i = 0; i < advertisements.length; i++) {
     var pin = generatePin(advertisements[i], template);
+    addShowCardListener(pin, advertisements[i]);
     mapPins.appendChild(pin);
   }
 };
@@ -167,14 +168,88 @@ var generateAdvCard = function (advertisement, template) {
 };
 
 
-var renderAdvCard = function (advertisements) {
+var renderAdvCard = function (advertisement) {
   var templateOfAdvCard = document.querySelector('#card');
   var mapAdvCard = document.querySelector('.map');
   var containerBefore = document.querySelector('.map__filters-container');
-  var advCard = generateAdvCard(advertisements[0], templateOfAdvCard);
+  var advCard = generateAdvCard(advertisement, templateOfAdvCard);
+  deleteMapCard();
   mapAdvCard.insertBefore(advCard, containerBefore);
+  var close = document.querySelector('.popup__close');
+  close.addEventListener('click', function (event) {
+    event.preventDefault();
+    deleteMapCard();
+  });
+  document.addEventListener('keydown', function(evt) {
+    if (evt.keyCode === 27) {
+      deleteMapCard();
+    }
+  });
 };
 
 advertisementList = generateAdv();
-renderPins(advertisementList);
-renderAdvCard(advertisementList);
+
+// Неактивное состояние полей формы
+
+var disableElements = function (elementList) {
+  elementList.forEach(function (element) {
+    element.setAttribute('disabled', 'disabled');
+  });
+};
+
+var enableElements = function (elementList) {
+  elementList.forEach(function (element) {
+    element.removeAttribute('disabled');
+  });
+};
+
+var form = document.querySelector('.ad-form');
+var formSpace = form.querySelectorAll('fieldset');
+
+disableElements(formSpace);
+
+
+var map = document.querySelector('.map');
+var filtersForm = document.querySelector('.map__filters');
+var filterSelector = filtersForm.querySelectorAll('.map__filter');
+var filterFeatures = filtersForm.querySelector('fieldset');
+disableElements(filterSelector);
+filterFeatures.setAttribute('disabled', 'disabled');
+
+var addShowCardListener = function (pin, advertisement) {
+  pin.addEventListener('click', function (event) {
+    event.preventDefault();
+    renderAdvCard(advertisement);
+  });
+};
+
+var pinButton = document.querySelector('.map__pin--main');
+pinButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  enableElements(formSpace);
+  enableElements(filterSelector);
+  filterFeatures.removeAttribute('disabled');
+  renderPins(advertisementList);
+
+  var mapPin = document.querySelectorAll('.map__pin');
+  for (var i = 1; i < mapPin.length; i++) {
+    addShowCardListener(mapPin[i], advertisementList[i - 1]);
+  }
+});
+
+var address = document.querySelector('#address');
+var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
+var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+address.value = buttonX + ', ' + buttonY;
+
+
+var deleteMapCard = function () {
+  var mapCard = document.querySelector('.map__card');
+  if (mapCard !== null) {
+    mapCard.remove();
+  }
+};
+
+
