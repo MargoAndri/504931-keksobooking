@@ -24,10 +24,18 @@ var PHOTOS_LIST = [
 ];
 var FLAT_TYPE_TRANSLATION = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
 
+/**
+ * @param {number} minValue
+ * @param {number} maxValue
+ * @return {number}
+ */
 var generateRandomInteger = function (minValue, maxValue) {
   return Math.round(Math.random() * (maxValue - minValue) + minValue);
 };
 
+/**
+ * @return {Array}
+ */
 var generateFeaturesList = function () {
   var featuresList = [];
   var featuresListLength = generateRandomInteger(1, FEATURES.length);
@@ -41,6 +49,9 @@ var generateFeaturesList = function () {
   return featuresList;
 };
 
+/**
+ * @return {Array}
+ */
 var generatePhotosList = function () {
   var photosList = [];
   var photo = '';
@@ -102,10 +113,12 @@ var generatePin = function (advertisement, template) {
 var renderPins = function (advertisements) {
   var template = document.querySelector('#pin');
   var mapPins = document.querySelector('.map__pins');
-  for (var i = 0; i < advertisements.length; i++) {
-    var pin = generatePin(advertisements[i], template);
-    addShowCardListener(pin, advertisements[i]);
-    mapPins.appendChild(pin);
+  var allPins = document.querySelectorAll('.map__pin');
+  if (allPins.length === 1) {
+    for (var i = 0; i < advertisements.length; i++) {
+      var pin = generatePin(advertisements[i], template);
+      mapPins.appendChild(pin);
+    }
   }
 };
 
