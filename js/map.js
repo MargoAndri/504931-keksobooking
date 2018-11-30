@@ -1,6 +1,6 @@
 'use strict';
 
-// 1. Создание массива 8 сгенерированных объектов
+// Создание массива 8 сгенерированных объектов
 
 var advertisementList = [];
 var ADV_QUANTITY = 8;
@@ -23,7 +23,6 @@ var PHOTOS_LIST = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 var FLAT_TYPE_TRANSLATION = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
-
 
 var generateRandomInteger = function (minValue, maxValue) {
   return Math.round(Math.random() * (maxValue - minValue) + minValue);
@@ -53,7 +52,6 @@ var generatePhotosList = function () {
   }
   return photosList;
 };
-
 
 var generateAdv = function () {
   var result = [];
@@ -86,12 +84,7 @@ var generateAdv = function () {
   return result;
 };
 
-// 2. Класс .map--faded у блока .map удален
-
-// var map = document.querySelector('.map');
-// map.classList.remove('map--faded');
-
-// 3. Создание DOM - элемента, соответствующие меткам на карте
+// Создание DOM - элемента, соответствующие меткам на карте
 
 var generatePin = function (advertisement, template) {
   var pin = document.importNode(template.content, true);
@@ -104,7 +97,7 @@ var generatePin = function (advertisement, template) {
   return pin;
 };
 
-// 4. Отрисовка меток в блоке карты
+// Отрисовка меток в блоке карты
 
 var renderPins = function (advertisements) {
   var template = document.querySelector('#pin');
@@ -116,8 +109,7 @@ var renderPins = function (advertisements) {
   }
 };
 
-
-// 5. Создание карточки объявления
+// Создание карточки объявления
 
 var generateAdvCard = function (advertisement, template) {
   var cardInfo = document.importNode(template.content, true);
@@ -148,7 +140,6 @@ var generateAdvCard = function (advertisement, template) {
     }
   }
 
-
   var description = cardInfo.querySelector('.popup__description');
   description.textContent = advertisement.offer.description;
 
@@ -167,7 +158,6 @@ var generateAdvCard = function (advertisement, template) {
   return cardInfo;
 };
 
-
 var renderAdvCard = function (advertisement) {
   var templateOfAdvCard = document.querySelector('#card');
   var mapAdvCard = document.querySelector('.map');
@@ -176,11 +166,11 @@ var renderAdvCard = function (advertisement) {
   deleteMapCard();
   mapAdvCard.insertBefore(advCard, containerBefore);
   var close = document.querySelector('.popup__close');
-  close.addEventListener('click', function (event) {
-    event.preventDefault();
+  close.addEventListener('click', function (evt) {
+    evt.preventDefault();
     deleteMapCard();
   });
-  document.addEventListener('keydown', function(evt) {
+  document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 27) {
       deleteMapCard();
     }
@@ -190,6 +180,13 @@ var renderAdvCard = function (advertisement) {
 advertisementList = generateAdv();
 
 // Неактивное состояние полей формы
+
+var form = document.querySelector('.ad-form');
+var formSpace = form.querySelectorAll('fieldset');
+var map = document.querySelector('.map');
+var filtersForm = document.querySelector('.map__filters');
+var filterSelector = filtersForm.querySelectorAll('.map__filter');
+var filterFeatures = filtersForm.querySelector('fieldset');
 
 var disableElements = function (elementList) {
   elementList.forEach(function (element) {
@@ -203,25 +200,12 @@ var enableElements = function (elementList) {
   });
 };
 
-var form = document.querySelector('.ad-form');
-var formSpace = form.querySelectorAll('fieldset');
-
 disableElements(formSpace);
 
-
-var map = document.querySelector('.map');
-var filtersForm = document.querySelector('.map__filters');
-var filterSelector = filtersForm.querySelectorAll('.map__filter');
-var filterFeatures = filtersForm.querySelector('fieldset');
 disableElements(filterSelector);
 filterFeatures.setAttribute('disabled', 'disabled');
 
-var addShowCardListener = function (pin, advertisement) {
-  pin.addEventListener('click', function (event) {
-    event.preventDefault();
-    renderAdvCard(advertisement);
-  });
-};
+// Активация страницы
 
 var pinButton = document.querySelector('.map__pin--main');
 pinButton.addEventListener('click', function (evt) {
@@ -232,18 +216,18 @@ pinButton.addEventListener('click', function (evt) {
   enableElements(filterSelector);
   filterFeatures.removeAttribute('disabled');
   renderPins(advertisementList);
-
   var mapPin = document.querySelectorAll('.map__pin');
   for (var i = 1; i < mapPin.length; i++) {
     addShowCardListener(mapPin[i], advertisementList[i - 1]);
   }
 });
 
-var address = document.querySelector('#address');
-var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
-var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
-address.value = buttonX + ', ' + buttonY;
-
+var addShowCardListener = function (pin, advertisement) {
+  pin.addEventListener('click', function (event) {
+    event.preventDefault();
+    renderAdvCard(advertisement);
+  });
+};
 
 var deleteMapCard = function () {
   var mapCard = document.querySelector('.map__card');
@@ -252,4 +236,11 @@ var deleteMapCard = function () {
   }
 };
 
+//  Заполнение поля адреса
+
+var address = document.querySelector('#address');
+var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
+var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+
+address.value = buttonX + ', ' + buttonY;
 
