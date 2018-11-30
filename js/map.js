@@ -236,7 +236,7 @@ var deleteMapCard = function () {
   }
 };
 
-//  Заполнение поля адреса
+// Заполнение поля адреса
 
 var address = document.querySelector('#address');
 var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
