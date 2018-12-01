@@ -23,7 +23,11 @@ var PHOTOS_LIST = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 var FLAT_TYPE_TRANSLATION = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
-
+var form = document.querySelector('.ad-form');
+var formSpace = form.querySelectorAll('fieldset');
+var filtersForm = document.querySelector('.map__filters');
+var filterSelector = filtersForm.querySelectorAll('.map__filter');
+var filterFeatures = filtersForm.querySelector('fieldset');
 /**
  * @param {number} minValue
  * @param {number} maxValue
@@ -34,7 +38,7 @@ var generateRandomInteger = function (minValue, maxValue) {
 };
 
 /**
- * @return {Array}
+ * @return {Array} featuresList
  */
 var generateFeaturesList = function () {
   var featuresList = [];
@@ -50,7 +54,7 @@ var generateFeaturesList = function () {
 };
 
 /**
- * @return {Array}
+ * @return {Array} photosList
  */
 var generatePhotosList = function () {
   var photosList = [];
@@ -64,6 +68,10 @@ var generatePhotosList = function () {
   return photosList;
 };
 
+/**
+ *
+ * @return {Array} result
+ */
 var generateAdv = function () {
   var result = [];
   for (var i = 0; i < ADV_QUANTITY; i++) {
@@ -97,6 +105,12 @@ var generateAdv = function () {
 
 // Создание DOM - элемента, соответствующие меткам на карте
 
+/**
+ *
+ * @param {Object} advertisement
+ * @param {Object} template
+ * @return {Node} pin
+ */
 var generatePin = function (advertisement, template) {
   var pin = document.importNode(template.content, true);
   var button = pin.querySelector('button');
@@ -110,6 +124,10 @@ var generatePin = function (advertisement, template) {
 
 // Отрисовка меток в блоке карты
 
+/**
+ *
+ * @param {Array} advertisements
+ */
 var renderPins = function (advertisements) {
   var template = document.querySelector('#pin');
   var mapPins = document.querySelector('.map__pins');
@@ -124,6 +142,12 @@ var renderPins = function (advertisements) {
 
 // Создание карточки объявления
 
+/**
+ *
+ * @param {Object} advertisement
+ * @param {Object} template
+ * @return {Node} cardInfo
+ */
 var generateAdvCard = function (advertisement, template) {
   var cardInfo = document.importNode(template.content, true);
   var title = cardInfo.querySelector('.popup__title');
@@ -171,6 +195,10 @@ var generateAdvCard = function (advertisement, template) {
   return cardInfo;
 };
 
+/**
+ *
+ * @param {Object} advertisement
+ */
 var renderAdvCard = function (advertisement) {
   var templateOfAdvCard = document.querySelector('#card');
   var mapAdvCard = document.querySelector('.map');
@@ -190,51 +218,33 @@ var renderAdvCard = function (advertisement) {
   });
 };
 
-advertisementList = generateAdv();
-
 // Неактивное состояние полей формы
-
-var form = document.querySelector('.ad-form');
-var formSpace = form.querySelectorAll('fieldset');
-var map = document.querySelector('.map');
-var filtersForm = document.querySelector('.map__filters');
-var filterSelector = filtersForm.querySelectorAll('.map__filter');
-var filterFeatures = filtersForm.querySelector('fieldset');
-
+/**
+ *
+ * @param {NodeList} elementList
+ */
 var disableElements = function (elementList) {
   elementList.forEach(function (element) {
     element.setAttribute('disabled', 'disabled');
   });
 };
 
+/**
+ *
+ * @param {NodeList} elementList
+ */
 var enableElements = function (elementList) {
   elementList.forEach(function (element) {
     element.removeAttribute('disabled');
   });
 };
 
-disableElements(formSpace);
-
-disableElements(filterSelector);
-filterFeatures.setAttribute('disabled', 'disabled');
-
 // Активация страницы
-
-var pinButton = document.querySelector('.map__pin--main');
-pinButton.addEventListener('click', function (evt) {
-  evt.preventDefault();
-  map.classList.remove('map--faded');
-  form.classList.remove('ad-form--disabled');
-  enableElements(formSpace);
-  enableElements(filterSelector);
-  filterFeatures.removeAttribute('disabled');
-  renderPins(advertisementList);
-  var mapPin = document.querySelectorAll('.map__pin');
-  for (var i = 1; i < mapPin.length; i++) {
-    addShowCardListener(mapPin[i], advertisementList[i - 1]);
-  }
-});
-
+/**
+ *
+ * @param {Node} pin
+ * @param {Object} advertisement
+ */
 var addShowCardListener = function (pin, advertisement) {
   pin.addEventListener('click', function (event) {
     event.preventDefault();
@@ -249,11 +259,31 @@ var deleteMapCard = function () {
   }
 };
 
+var pinButton = document.querySelector('.map__pin--main');
+var map = document.querySelector('.map');
+pinButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  enableElements(formSpace);
+  enableElements(filterSelector);
+  filterFeatures.removeAttribute('disabled');
+  renderPins(advertisementList);
+  var mapPin = document.querySelectorAll('.map__pin');
+  for (var i = 1; i < mapPin.length; i++) {
+    addShowCardListener(mapPin[i], advertisementList[i - 1]);
+  }
+});
+
 // Заполнение поля адреса
 
 var address = document.querySelector('#address');
 var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
 var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
-
 address.value = buttonX + ', ' + buttonY;
 
+
+advertisementList = generateAdv();
+filterFeatures.setAttribute('disabled', 'disabled');
+disableElements(formSpace);
+disableElements(filterSelector);
