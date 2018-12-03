@@ -246,8 +246,8 @@ var enableElements = function (elementList) {
  * @param {Object} advertisement
  */
 var addShowCardListener = function (pin, advertisement) {
-  pin.addEventListener('click', function (event) {
-    event.preventDefault();
+  pin.addEventListener('click', function (evt) {
+    evt.preventDefault();
     renderAdvCard(advertisement);
   });
 };
@@ -288,9 +288,10 @@ filterFeatures.setAttribute('disabled', 'disabled');
 disableElements(formSpace);
 disableElements(filterSelector);
 
-
+// Обработчик события смены жилья
 var flatType = document.querySelector('#type');
 var priceOption = document.querySelector('#price');
+
 flatType.addEventListener('change', function () {
   switch (flatType.value) {
     case 'bungalo':
@@ -310,5 +311,44 @@ flatType.addEventListener('change', function () {
       priceOption.placeholder = 1000;
       break;
   }
-})
+});
+
+
+// Синхронизация время заезда и выезда
+
+var timeInOption = document.querySelector('#timein');
+var timeOutOption = document.querySelector('#timeout');
+
+timeInOption.addEventListener('change', function () {
+  timeOutOption.value = timeInOption.value;
+});
+
+timeOutOption.addEventListener('change', function () {
+  timeInOption.value = timeOutOption.value;
+});
+
+// Синхронизация количества комнат с количеством гостей
+
+var roomCapacity = document.querySelector('#capacity');
+var roomNumber = document.querySelector('#room_number');
+
+var checkRoomCapacity = function () {
+  var roomNumberValue = parseInt(roomNumber.value, 10);
+  var roomCapacityValue = parseInt(roomCapacity.value, 10);
+  if (roomNumberValue < roomCapacityValue || roomNumberValue !== 100 && roomCapacityValue === 0) {
+    roomCapacity.setCustomValidity('Нужно больше комнат.');
+  } else if (roomNumberValue === 100 && roomCapacityValue !== 0) {
+    roomCapacity.setCustomValidity('Тут проводятся вечеринки!');
+  } else {
+    roomCapacity.setCustomValidity('');
+  }
+};
+
+roomNumber.addEventListener('change', function () {
+  checkRoomCapacity();
+});
+roomCapacity.addEventListener('change', function () {
+  checkRoomCapacity();
+});
+
 
