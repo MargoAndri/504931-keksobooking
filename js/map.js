@@ -287,3 +287,28 @@ advertisementList = generateAdv();
 filterFeatures.setAttribute('disabled', 'disabled');
 disableElements(formSpace);
 disableElements(filterSelector);
+
+
+var flatType = document.querySelector('#type');
+var priceOption = document.querySelector('#price');
+flatType.addEventListener('change', function () {
+  switch (flatType.value) {
+    case 'bungalo':
+      priceOption.min = 0;
+      priceOption.placeholder = 0;
+      break;
+    case 'house':
+      priceOption.min = 5000;
+      priceOption.placeholder = 5000;
+      break;
+    case 'palace':
+      priceOption.min = 10000;
+      priceOption.placeholder = 10000;
+      break;
+    case 'flat':
+      priceOption.min = 1000;
+      priceOption.placeholder = 1000;
+      break;
+  }
+})
+
