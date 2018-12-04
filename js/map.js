@@ -28,6 +28,9 @@ var formSpace = form.querySelectorAll('fieldset');
 var filtersForm = document.querySelector('.map__filters');
 var filterSelector = filtersForm.querySelectorAll('.map__filter');
 var filterFeatures = filtersForm.querySelector('fieldset');
+var MAIN_PIN_TOP = 375;
+var MAIN_PIN_LEFT = 570;
+
 /**
  * @param {number} minValue
  * @param {number} maxValue
@@ -275,20 +278,8 @@ pinButton.addEventListener('click', function (evt) {
   }
 });
 
-// Заполнение поля адреса
-
-var address = document.querySelector('#address');
-var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
-var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
-address.value = buttonX + ', ' + buttonY;
-
-
-advertisementList = generateAdv();
-filterFeatures.setAttribute('disabled', 'disabled');
-disableElements(formSpace);
-disableElements(filterSelector);
-
 // Обработчик события смены жилья
+
 var flatType = document.querySelector('#type');
 var priceOption = document.querySelector('#price');
 
@@ -312,7 +303,6 @@ flatType.addEventListener('change', function () {
       break;
   }
 });
-
 
 // Синхронизация время заезда и выезда
 
@@ -352,3 +342,36 @@ roomCapacity.addEventListener('change', function () {
 });
 
 
+// Сбрасывание страницы в исходное неактивное состояние
+
+var resetPage = function () {
+  var allPins = document.querySelectorAll('.map__pin');
+  var mapPins = document.querySelector('.map__pins');
+  for (var i = 1; i < allPins.length; i++) {
+    mapPins.removeChild(allPins[i]);
+  }
+  deleteMapCard();
+  map.classList.add('map--faded');
+  form.classList.add('ad-form--disabled');
+  disableElements(formSpace);
+  disableElements(filterSelector);
+  form.reset();
+  pinButton.style.top = MAIN_PIN_TOP + 'px';
+  pinButton.style.left = MAIN_PIN_LEFT + 'px';
+  var address = document.querySelector('#address');
+  var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
+  var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+  address.value = buttonX + ', ' + buttonY;
+};
+
+var resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  resetPage();
+});
+
+resetPage();
+advertisementList = generateAdv();
+filterFeatures.setAttribute('disabled', 'disabled');
+disableElements(formSpace);
+disableElements(filterSelector);
