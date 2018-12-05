@@ -262,6 +262,45 @@ var deleteMapCard = function () {
   }
 };
 
+// Сбрасывание страницы в исходное неактивное состояние
+
+var resetPage = function () {
+  var allPins = document.querySelectorAll('.map__pin');
+  var mapPins = document.querySelector('.map__pins');
+  for (var i = 1; i < allPins.length; i++) {
+    mapPins.removeChild(allPins[i]);
+  }
+  deleteMapCard();
+  map.classList.add('map--faded');
+  form.classList.add('ad-form--disabled');
+  disableElements(formSpace);
+  disableElements(filterSelector);
+  form.reset();
+  pinButton.style.top = MAIN_PIN_TOP + 'px';
+  pinButton.style.left = MAIN_PIN_LEFT + 'px';
+  var address = document.querySelector('#address');
+  var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
+  var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+  address.value = buttonX + ', ' + buttonY;
+};
+
+// Синхронизация количества комнат с количеством гостей
+
+var roomCapacity = document.querySelector('#capacity');
+var roomNumber = document.querySelector('#room_number');
+
+var checkRoomCapacity = function () {
+  var roomNumberValue = parseInt(roomNumber.value, 10);
+  var roomCapacityValue = parseInt(roomCapacity.value, 10);
+  if (roomNumberValue < roomCapacityValue || roomNumberValue !== 100 && roomCapacityValue === 0) {
+    roomCapacity.setCustomValidity('Нужно больше комнат.');
+  } else if (roomNumberValue === 100 && roomCapacityValue !== 0) {
+    roomCapacity.setCustomValidity('Тут проводятся вечеринки!');
+  } else {
+    roomCapacity.setCustomValidity('');
+  }
+};
+
 var pinButton = document.querySelector('.map__pin--main');
 var map = document.querySelector('.map');
 pinButton.addEventListener('click', function (evt) {
@@ -317,23 +356,6 @@ timeOutOption.addEventListener('change', function () {
   timeInOption.value = timeOutOption.value;
 });
 
-// Синхронизация количества комнат с количеством гостей
-
-var roomCapacity = document.querySelector('#capacity');
-var roomNumber = document.querySelector('#room_number');
-
-var checkRoomCapacity = function () {
-  var roomNumberValue = parseInt(roomNumber.value, 10);
-  var roomCapacityValue = parseInt(roomCapacity.value, 10);
-  if (roomNumberValue < roomCapacityValue || roomNumberValue !== 100 && roomCapacityValue === 0) {
-    roomCapacity.setCustomValidity('Нужно больше комнат.');
-  } else if (roomNumberValue === 100 && roomCapacityValue !== 0) {
-    roomCapacity.setCustomValidity('Тут проводятся вечеринки!');
-  } else {
-    roomCapacity.setCustomValidity('');
-  }
-};
-
 roomNumber.addEventListener('change', function () {
   checkRoomCapacity();
 });
@@ -341,28 +363,6 @@ roomCapacity.addEventListener('change', function () {
   checkRoomCapacity();
 });
 
-
-// Сбрасывание страницы в исходное неактивное состояние
-
-var resetPage = function () {
-  var allPins = document.querySelectorAll('.map__pin');
-  var mapPins = document.querySelector('.map__pins');
-  for (var i = 1; i < allPins.length; i++) {
-    mapPins.removeChild(allPins[i]);
-  }
-  deleteMapCard();
-  map.classList.add('map--faded');
-  form.classList.add('ad-form--disabled');
-  disableElements(formSpace);
-  disableElements(filterSelector);
-  form.reset();
-  pinButton.style.top = MAIN_PIN_TOP + 'px';
-  pinButton.style.left = MAIN_PIN_LEFT + 'px';
-  var address = document.querySelector('#address');
-  var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
-  var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
-  address.value = buttonX + ', ' + buttonY;
-};
 
 var resetButton = document.querySelector('.ad-form__reset');
 resetButton.addEventListener('click', function (evt) {
