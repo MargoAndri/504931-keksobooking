@@ -28,6 +28,9 @@ var formSpace = form.querySelectorAll('fieldset');
 var filtersForm = document.querySelector('.map__filters');
 var filterSelector = filtersForm.querySelectorAll('.map__filter');
 var filterFeatures = filtersForm.querySelector('fieldset');
+var MAIN_PIN_TOP = 375;
+var MAIN_PIN_LEFT = 570;
+
 /**
  * @param {number} minValue
  * @param {number} maxValue
@@ -246,8 +249,8 @@ var enableElements = function (elementList) {
  * @param {Object} advertisement
  */
 var addShowCardListener = function (pin, advertisement) {
-  pin.addEventListener('click', function (event) {
-    event.preventDefault();
+  pin.addEventListener('click', function (evt) {
+    evt.preventDefault();
     renderAdvCard(advertisement);
   });
 };
@@ -256,6 +259,45 @@ var deleteMapCard = function () {
   var mapCard = document.querySelector('.map__card');
   if (mapCard !== null) {
     mapCard.remove();
+  }
+};
+
+// Сбрасывание страницы в исходное неактивное состояние
+
+var resetPage = function () {
+  var allPins = document.querySelectorAll('.map__pin');
+  var mapPins = document.querySelector('.map__pins');
+  for (var i = 1; i < allPins.length; i++) {
+    mapPins.removeChild(allPins[i]);
+  }
+  deleteMapCard();
+  map.classList.add('map--faded');
+  form.classList.add('ad-form--disabled');
+  disableElements(formSpace);
+  disableElements(filterSelector);
+  form.reset();
+  pinButton.style.top = MAIN_PIN_TOP + 'px';
+  pinButton.style.left = MAIN_PIN_LEFT + 'px';
+  var address = document.querySelector('#address');
+  var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
+  var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+  address.value = buttonX + ', ' + buttonY;
+};
+
+// Синхронизация количества комнат с количеством гостей
+
+var roomCapacity = document.querySelector('#capacity');
+var roomNumber = document.querySelector('#room_number');
+
+var checkRoomCapacity = function () {
+  var roomNumberValue = parseInt(roomNumber.value, 10);
+  var roomCapacityValue = parseInt(roomCapacity.value, 10);
+  if (roomNumberValue < roomCapacityValue || roomNumberValue !== 100 && roomCapacityValue === 0) {
+    roomCapacity.setCustomValidity('Нужно больше комнат.');
+  } else if (roomNumberValue === 100 && roomCapacityValue !== 0) {
+    roomCapacity.setCustomValidity('Тут проводятся вечеринки!');
+  } else {
+    roomCapacity.setCustomValidity('');
   }
 };
 
@@ -275,14 +317,60 @@ pinButton.addEventListener('click', function (evt) {
   }
 });
 
-// Заполнение поля адреса
+// Обработчик события смены жилья
 
-var address = document.querySelector('#address');
-var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
-var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
-address.value = buttonX + ', ' + buttonY;
+var flatType = document.querySelector('#type');
+var priceOption = document.querySelector('#price');
+
+flatType.addEventListener('change', function () {
+  switch (flatType.value) {
+    case 'bungalo':
+      priceOption.min = 0;
+      priceOption.placeholder = 0;
+      break;
+    case 'house':
+      priceOption.min = 5000;
+      priceOption.placeholder = 5000;
+      break;
+    case 'palace':
+      priceOption.min = 10000;
+      priceOption.placeholder = 10000;
+      break;
+    case 'flat':
+      priceOption.min = 1000;
+      priceOption.placeholder = 1000;
+      break;
+  }
+});
+
+// Синхронизация время заезда и выезда
+
+var timeInOption = document.querySelector('#timein');
+var timeOutOption = document.querySelector('#timeout');
+
+timeInOption.addEventListener('change', function () {
+  timeOutOption.value = timeInOption.value;
+});
+
+timeOutOption.addEventListener('change', function () {
+  timeInOption.value = timeOutOption.value;
+});
+
+roomNumber.addEventListener('change', function () {
+  checkRoomCapacity();
+});
+roomCapacity.addEventListener('change', function () {
+  checkRoomCapacity();
+});
 
 
+var resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  resetPage();
+});
+
+resetPage();
 advertisementList = generateAdv();
 filterFeatures.setAttribute('disabled', 'disabled');
 disableElements(formSpace);
