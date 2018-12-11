@@ -30,6 +30,8 @@ var filterSelector = filtersForm.querySelectorAll('.map__filter');
 var filterFeatures = filtersForm.querySelector('fieldset');
 var MAIN_PIN_TOP = 375;
 var MAIN_PIN_LEFT = 570;
+var DEFAULT_PRICE_PLACEHOLDER = 1000;
+var DEFAULT_PRICE_MIN = 1000;
 
 var map = document.querySelector('.map');
 
@@ -287,7 +289,8 @@ var resetPage = function () {
   disableElements(formSpace);
   disableElements(filterSelector);
   form.reset();
-  priceOption.placeholder = 1000;
+  priceOption.placeholder = DEFAULT_PRICE_PLACEHOLDER;
+  priceOption.min = DEFAULT_PRICE_MIN;
   pinButton.style.top = MAIN_PIN_TOP + 'px';
   pinButton.style.left = MAIN_PIN_LEFT + 'px';
   updateAddressField();
@@ -315,7 +318,12 @@ var checkRoomCapacity = function () {
 var pinButton = document.querySelector('.map__pin--main');
 pinButton.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
 
+  // Активация страницы при нажатии на маркер
   var activatePage = function () {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
@@ -323,14 +331,10 @@ pinButton.addEventListener('mousedown', function (evt) {
     enableElements(filterSelector);
     filterFeatures.removeAttribute('disabled');
   };
-
-  activatePage();
-
-  var startCoords = {
-    x: evt.clientX,
-    y: evt.clientY
-  };
-
+  /**
+   *
+   * @param {Object} moveEvt
+   */
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
 
@@ -354,6 +358,10 @@ pinButton.addEventListener('mousedown', function (evt) {
     updateAddressField();
   };
 
+  /**
+   *
+   * @param {Object} upEvt
+   */
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
     renderPins(advertisementList);
@@ -366,8 +374,10 @@ pinButton.addEventListener('mousedown', function (evt) {
     updateAddressField();
   };
 
+  activatePage();
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
+
 });
 
 
