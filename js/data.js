@@ -77,19 +77,19 @@
         author: {
           avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
-        offer: {
-          title: TITLE_LIST[i],
-          address: xCoordinator + ', ' + yCoordinator,
-          price: generateRandomInteger(1000, 1000000),
-          type: FLAT_TYPE[generateRandomInteger(0, 3)],
-          rooms: generateRandomInteger(1, 5),
-          guests: generateRandomInteger(1, 20),
-          checkin: CHECKIN_TIME[generateRandomInteger(0, 2)],
-          checkout: CHECKIN_TIME[generateRandomInteger(0, 2)],
-          features: generateFeaturesList(),
-          description: '',
-          photos: generatePhotosList()
-        },
+        // offer: {
+        //   title: TITLE_LIST[i],
+        //   address: xCoordinator + ', ' + yCoordinator,
+        //   price: generateRandomInteger(1000, 1000000),
+        //   type: FLAT_TYPE[generateRandomInteger(0, 3)],
+        //   rooms: generateRandomInteger(1, 5),
+        //   guests: generateRandomInteger(1, 20),
+        //   checkin: CHECKIN_TIME[generateRandomInteger(0, 2)],
+        //   checkout: CHECKIN_TIME[generateRandomInteger(0, 2)],
+        //   features: generateFeaturesList(),
+        //   description: '',
+        //   photos: generatePhotosList()
+        // },
         location: {
           x: xCoordinator,
           y: yCoordinator

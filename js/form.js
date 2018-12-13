@@ -96,4 +96,57 @@
     window.page.resetPage();
   });
   window.form.updateAddressField();
+
+  var successHandler = function () {
+    var successTemplate = document.querySelector('#success');
+    var success = document.importNode(successTemplate.content, true);
+    var main = document.querySelector('main');
+    main.appendChild(success);
+  };
+
+  document.addEventListener('click', function () {
+    var successMessage = document.querySelector('.success');
+    if (successMessage) {
+      successMessage.remove();
+    }
+  });
+  document.addEventListener('keydown', function (evt) {
+    var successMessage = document.querySelector('.success');
+    if (evt.keyCode === 27) {
+      if (successMessage) {
+        successMessage.remove();
+      }
+    }
+  });
+
+  var errorHandler = function () {
+    var errorTemplate = document.querySelector('#error');
+    var error = document.importNode(errorTemplate.content, true);
+    var main = document.querySelector('main');
+    main.appendChild(error);
+
+    var errorButton = document.querySelector('.error__button');
+    var errorMessage = document.querySelector('.error__message');
+    errorButton.addEventListener('click', function () {
+      errorMessage.remove();
+    });
+    document.addEventListener('click', function () {
+      errorMessage.remove();
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keydown === 27) {
+        errorMessage.remove();
+      }
+    });
+  };
+
+  var form = document.querySelector('.ad-form');
+  form.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(form), function () {
+      successHandler();
+      window.page.resetPage();
+    }, errorHandler);
+  });
+
 })();
