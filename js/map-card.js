@@ -4,6 +4,8 @@
   // Создание карточки объявления
   /**
    * @param {Object} advertisement
+   * @param {Object} advertisement.author
+   * @param {Object} advertisement.offer
    * @param {Object} template
    * @return {Node} cardInfo
    */
@@ -29,27 +31,43 @@
     time.textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
 
     var features = cardInfo.querySelector('.popup__features');
-    for (var i = 0; i < window.data.FEATURES.length; i++) {
-      if (advertisement.offer.features.indexOf(window.data.FEATURES[i]) === -1) {
-        var featuresItem = features.querySelector('.popup__feature--' + window.data.FEATURES[i]);
-        features.removeChild(featuresItem);
+    if ('features' in advertisement.offer) {
+      for (var i = 0; i < window.data.FEATURES.length; i++) {
+        if (advertisement.offer.features.indexOf(window.data.FEATURES[i]) === -1) {
+          var featuresItem = features.querySelector('.popup__feature--' + window.data.FEATURES[i]);
+          features.removeChild(featuresItem);
+        }
       }
+    } else {
+      features.remove();
     }
 
     var description = cardInfo.querySelector('.popup__description');
-    description.textContent = advertisement.offer.description;
+    if ('description' in advertisement.offer) {
+      description.textContent = advertisement.offer.description;
+    } else {
+      description.remove();
+    }
 
     var photoList = cardInfo.querySelector('.popup__photos');
-    var photo = photoList.querySelector('img');
-    photo.src = window.data.PHOTOS_LIST[0];
-    for (i = 1; i < window.data.PHOTOS_LIST.length; i++) {
-      var nextPhoto = photo.cloneNode(true);
-      nextPhoto.src = window.data.PHOTOS_LIST[i];
-      photoList.appendChild(nextPhoto);
+    if ('photos' in advertisement.offer) {
+      var photo = photoList.querySelector('img');
+      photo.src = window.data.PHOTOS_LIST[0];
+      for (i = 1; i < window.data.PHOTOS_LIST.length; i++) {
+        var nextPhoto = photo.cloneNode(true);
+        nextPhoto.src = window.data.PHOTOS_LIST[i];
+        photoList.appendChild(nextPhoto);
+      }
+    } else {
+      photoList.remove();
     }
 
     var avatar = cardInfo.querySelector('.popup__avatar');
-    avatar.src = advertisement.author.avatar;
+    if ('avatar' in advertisement.author) {
+      avatar.src = advertisement.author.avatar;
+    } else {
+      avatar.remove();
+    }
 
     return cardInfo;
   };
