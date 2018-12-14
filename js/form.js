@@ -141,7 +141,7 @@
   };
 
   var form = document.querySelector('.ad-form');
-  form.addEventListener('submit', function(evt) {
+  form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.upload(new FormData(form), function () {
       successHandler();

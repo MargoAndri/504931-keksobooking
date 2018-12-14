@@ -4,6 +4,8 @@
   // Создание карточки объявления
   /**
    * @param {Object} advertisement
+   * @param {Object} advertisement.author
+   * @param {Object} advertisement.offer
    * @param {Object} template
    * @return {Node} cardInfo
    */

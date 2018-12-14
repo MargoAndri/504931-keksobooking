@@ -4,17 +4,17 @@
 
 (function () {
   var ADV_QUANTITY = 8;
-  var TITLE_LIST = [
-    'Большая уютная квартира',
-    'Маленькая неуютная квартира',
-    'Огромный прекрасный дворец',
-    'Маленький ужасный дворец',
-    'Красивый гостевой домик',
-    'Некрасивый негостеприимный домик',
-    'Уютное бунгало далеко от моря',
-    'Неуютное бунгало по колено в воде'
-  ];
-  var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
+  // var TITLE_LIST = [
+  //   'Большая уютная квартира',
+  //   'Маленькая неуютная квартира',
+  //   'Огромный прекрасный дворец',
+  //   'Маленький ужасный дворец',
+  //   'Красивый гостевой домик',
+  //   'Некрасивый негостеприимный домик',
+  //   'Уютное бунгало далеко от моря',
+  //   'Неуютное бунгало по колено в воде'
+  // ];
+  // var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
   var FLAT_TYPE = ['palace', 'flat', 'house', 'bungalo'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var PHOTOS_LIST = [
@@ -36,33 +36,33 @@
   /**
    * @return {Array} featuresList
    */
-  var generateFeaturesList = function () {
-    var featuresList = [];
-    var featuresListLength = generateRandomInteger(1, FEATURES.length);
-    var element = '';
-    for (var i = 0; i < featuresListLength; i++) {
-      do {
-        element = FEATURES[generateRandomInteger(0, FEATURES.length - 1)];
-      } while (featuresList.indexOf(element) !== -1);
-      featuresList[i] = element;
-    }
-    return featuresList;
-  };
+  // var generateFeaturesList = function () {
+  //   var featuresList = [];
+  //   var featuresListLength = generateRandomInteger(1, FEATURES.length);
+  //   var element = '';
+  //   for (var i = 0; i < featuresListLength; i++) {
+  //     do {
+  //       element = FEATURES[generateRandomInteger(0, FEATURES.length - 1)];
+  //     } while (featuresList.indexOf(element) !== -1);
+  //     featuresList[i] = element;
+  //   }
+  //   return featuresList;
+  // };
 
   /**
    * @return {Array} photosList
    */
-  var generatePhotosList = function () {
-    var photosList = [];
-    var photo = '';
-    for (var i = 0; i < PHOTOS_LIST.length; i++) {
-      do {
-        photo = PHOTOS_LIST[generateRandomInteger(0, PHOTOS_LIST.length - 1)];
-      } while (photosList.indexOf(photo) !== -1);
-      photosList[i] = photo;
-    }
-    return photosList;
-  };
+  // var generatePhotosList = function () {
+  //   var photosList = [];
+  //   var photo = '';
+  //   for (var i = 0; i < PHOTOS_LIST.length; i++) {
+  //     do {
+  //       photo = PHOTOS_LIST[generateRandomInteger(0, PHOTOS_LIST.length - 1)];
+  //     } while (photosList.indexOf(photo) !== -1);
+  //     photosList[i] = photo;
+  //   }
+  //   return photosList;
+  // };
 
   /**
    *

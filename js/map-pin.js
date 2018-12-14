@@ -6,6 +6,9 @@
   var pinButton = document.querySelector('.map__pin--main');
   /**
    * @param {Object} advertisement
+   * @param {Object} advertisement.author
+   * @param {Object} advertisement.location
+   * @param {Object} advertisement.offer
    * @param {Object} template
    * @return {Node} pin
    */
@@ -26,21 +29,21 @@
    * @param {Array} advertisements
    */
   var renderPins = function (advertisements) {
-    var advWithoutOffer = advertisements.filter(function (item) {
+    var advWithOffer = advertisements.filter(function (item) {
       return 'offer' in item;
     });
     var template = document.querySelector('#pin');
     var mapPins = document.querySelector('.map__pins');
     var allPins = document.querySelectorAll('.map__pin');
     if (allPins.length === 1) {
-      for (var i = 0; i < advWithoutOffer.length; i++) {
-        var pin = generatePin(advWithoutOffer[i], template);
+      for (var i = 0; i < advWithOffer.length; i++) {
+        var pin = generatePin(advWithOffer[i], template);
         mapPins.appendChild(pin);
       }
     }
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 1; i < mapPin.length; i++) {
-      window.page.addShowCardListener(mapPin[i], advWithoutOffer[i - 1]);
+      window.page.addShowCardListener(mapPin[i], advWithOffer[i - 1]);
     }
   };
 
