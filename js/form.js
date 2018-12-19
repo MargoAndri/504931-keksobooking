@@ -149,4 +149,21 @@
     }, errorHandler);
   });
 
+  // Добавление атрибута чекбоксам форм
+
+  var checkboxInput = document.querySelectorAll('input[type = checkbox]');
+  checkboxInput.forEach(function (item) {
+    item.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 13) {
+        if (item.checked) {
+          item.removeAttribute('checked');
+        } else {
+          item.setAttribute('checked', 'checked');
+        }
+        var e = new Event('change', {bubbles: true});
+        item.dispatchEvent(e);
+      }
+    });
+  });
+
 })();

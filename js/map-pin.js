@@ -42,6 +42,7 @@
         selectedHousingFeatures.push(item.value);
       }
     });
+
     var advWithOffer = advertisements.filter(function (item) {
       return 'offer' in item;
     });

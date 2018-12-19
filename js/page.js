@@ -15,6 +15,11 @@
         evt.preventDefault();
         window.mapCard.renderAdvCard(advertisement);
       });
+      pin.addEventListener('keydown', function (evt) {
+        if (evt.keyCode === 13) {
+          window.mapCard.renderAdvCard(advertisement);
+        }
+      });
     },
     deleteMapCard: function () {
       var mapCard = document.querySelector('.map__card');
@@ -56,3 +61,4 @@
   };
   window.page.resetPage();
 })();
+
