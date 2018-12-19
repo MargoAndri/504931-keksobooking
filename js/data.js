@@ -1,21 +1,26 @@
 'use strict';
 
-// Создание массива 8 сгенерированных объектов
-
 (function () {
-  var FLAT_TYPE = ['palace', 'flat', 'house', 'bungalo'];
-  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var PHOTOS_LIST = [
-    'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-  ];
-  var FLAT_TYPE_TRANSLATION = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
   window.data = {
-    FLAT_TYPE: FLAT_TYPE,
-    FLAT_TYPE_TRANSLATION: FLAT_TYPE_TRANSLATION,
-    PHOTOS_LIST: PHOTOS_LIST,
-    FEATURES: FEATURES,
-    ADV_QUANTITY: 5
+    FLAT_TYPE: ['palace', 'flat', 'house', 'bungalo'],
+    FLAT_TYPE_TRANSLATION: ['Дворец', 'Квартира', 'Дом', 'Бунгало'],
+    PHOTOS_LIST: [
+      'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+      'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+      'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+    ],
+    FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+    ADV_QUANTITY: 5,
+    FLAT_TYPE_MIN_VALUES: {
+      'bungalo': 0,
+      'house': 5000,
+      'palace': 10000,
+      'flat': 1000
+    },
+    Code: {
+      ESC: 27,
+      ENTER: 13
+    }
   };
+
 })();

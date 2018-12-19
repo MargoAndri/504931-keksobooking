@@ -1,8 +1,11 @@
 'use strict';
 
-// Неактивное состояние полей формы
+
 (function () {
+  var LEFT_GAP = 32;
+  var TOP_GAP = 84;
   window.form = {
+    // Неактивное состояние полей формы
     /**
      * @param {NodeList} elementList
      */
@@ -22,8 +25,8 @@
     updateAddressField: function () {
       var address = document.querySelector('#address');
       var pinButton = document.querySelector('.map__pin--main');
-      var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + 32;
-      var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + 84;
+      var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + LEFT_GAP;
+      var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + TOP_GAP;
       address.value = buttonX + ', ' + buttonY;
     }
   };
@@ -50,24 +53,8 @@
   var priceOption = document.querySelector('#price');
 
   flatType.addEventListener('change', function () {
-    switch (flatType.value) {
-      case 'bungalo':
-        priceOption.min = 0;
-        priceOption.placeholder = 0;
-        break;
-      case 'house':
-        priceOption.min = 5000;
-        priceOption.placeholder = 5000;
-        break;
-      case 'palace':
-        priceOption.min = 10000;
-        priceOption.placeholder = 10000;
-        break;
-      case 'flat':
-        priceOption.min = 1000;
-        priceOption.placeholder = 1000;
-        break;
-    }
+    priceOption.min = window.data.FLAT_TYPE_MIN_VALUES[flatType.value];
+    priceOption.placeholder = window.data.FLAT_TYPE_MIN_VALUES[flatType.value];
   });
 
   // Синхронизация время заезда и выезда
@@ -94,8 +81,9 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     window.page.resetPage();
+    window.form.updateAddressField();
   });
-  window.form.updateAddressField();
+  // window.form.updateAddressField();
 
   var successHandler = function () {
     var successTemplate = document.querySelector('#success');
@@ -112,7 +100,7 @@
   });
   document.addEventListener('keydown', function (evt) {
     var successMessage = document.querySelector('.success');
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === window.data.Code.ESC) {
       if (successMessage) {
         successMessage.remove();
       }
@@ -126,7 +114,7 @@
     main.appendChild(error);
 
     var errorButton = document.querySelector('.error__button');
-    var errorMessage = document.querySelector('.error__message');
+    var errorMessage = document.querySelector('.error');
     errorButton.addEventListener('click', function () {
       errorMessage.remove();
     });
@@ -134,7 +122,7 @@
       errorMessage.remove();
     });
     document.addEventListener('keydown', function (evt) {
-      if (evt.keydown === 27) {
+      if (evt.keyCode === window.data.Code.ESC) {
         errorMessage.remove();
       }
     });
@@ -154,12 +142,9 @@
   var checkboxInput = document.querySelectorAll('input[type = checkbox]');
   checkboxInput.forEach(function (item) {
     item.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 13) {
-        if (item.checked) {
-          item.removeAttribute('checked');
-        } else {
-          item.setAttribute('checked', 'checked');
-        }
+      if (evt.keyCode === window.data.Code.ENTER) {
+        evt.preventDefault();
+        item.checked = !item.checked;
         var e = new Event('change', {bubbles: true});
         item.dispatchEvent(e);
       }

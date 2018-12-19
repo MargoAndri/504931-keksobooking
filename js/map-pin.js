@@ -1,6 +1,6 @@
 'use strict';
 
-// Создание DOM - элемента, соответствующие меткам на карте
+
 (function () {
   var map = document.querySelector('.map');
   var pinButton = document.querySelector('.map__pin--main');
@@ -11,6 +11,13 @@
   var housingGuestsNumber = document.querySelector('#housing-guests');
   var housingFeatures = document.querySelectorAll('.map__checkbox');
   var loadedAdvertisements = [];
+  var MAP_LEFT_GAP = 25;
+  var MAP_TOP_GAP = 70;
+  var LOW_PRICE = 1000;
+  var HIGH_PRICE = 50000;
+  var TOP_LEFT_LIMIT = 130;
+  var TOP_RIGHT_LIMIT = 630;
+  var LEFT_LIMIT = 32;
   /**
    * @param {Object} advertisement
    * @param {Object} advertisement.author
@@ -22,8 +29,8 @@
   var generatePin = function (advertisement, template) {
     var pin = document.importNode(template.content, true);
     var button = pin.querySelector('button');
-    button.style.left = advertisement.location.x - 25 + 'px';
-    button.style.top = advertisement.location.y - 70 + 'px';
+    button.style.left = advertisement.location.x - MAP_LEFT_GAP + 'px';
+    button.style.top = advertisement.location.y - MAP_TOP_GAP + 'px';
     var image = pin.querySelector('img');
     image.src = advertisement.author.avatar;
     image.alt = advertisement.offer.title;
@@ -55,11 +62,11 @@
       advWithOffer = advWithOffer.filter(function (item) {
         switch (housingPrice.value) {
           case 'low':
-            return item.offer.price < 10000;
+            return item.offer.price < LOW_PRICE;
           case 'middle':
-            return item.offer.price >= 10000 && item.offer.price < 50000;
+            return item.offer.price >= LOW_PRICE && item.offer.price < HIGH_PRICE;
           case 'high':
-            return item.offer.price >= 50000;
+            return item.offer.price >= HIGH_PRICE;
         }
         return false;
       });
@@ -148,11 +155,11 @@
         y: moveEvt.clientY
       };
       var offsetTop = pinButton.offsetTop - shift.y;
-      if (offsetTop >= 130 && offsetTop <= 630) {
+      if (offsetTop >= TOP_LEFT_LIMIT && offsetTop <= TOP_RIGHT_LIMIT) {
         pinButton.style.top = offsetTop + 'px';
       }
       var offsetLeft = pinButton.offsetLeft - shift.x;
-      if (offsetLeft <= (map.offsetWidth - 32) && offsetLeft >= -32) {
+      if (offsetLeft <= (map.offsetWidth - LEFT_LIMIT) && offsetLeft >= -LEFT_LIMIT) {
         pinButton.style.left = pinButton.offsetLeft - shift.x + 'px';
       }
       window.form.updateAddressField();
