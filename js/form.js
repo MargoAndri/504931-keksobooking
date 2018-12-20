@@ -53,8 +53,8 @@
   var priceOption = document.querySelector('#price');
 
   flatType.addEventListener('change', function () {
-    priceOption.min = window.data.FLAT_TYPE_MIN_VALUES[flatType.value];
-    priceOption.placeholder = window.data.FLAT_TYPE_MIN_VALUES[flatType.value];
+    priceOption.min = window.data.flatTypeToMinPrice[flatType.value];
+    priceOption.placeholder = window.data.flatTypeToMinPrice[flatType.value];
   });
 
   // Синхронизация время заезда и выезда
@@ -81,9 +81,7 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     window.page.resetPage();
-    window.form.updateAddressField();
   });
-  // window.form.updateAddressField();
 
   var successHandler = function () {
     var successTemplate = document.querySelector('#success');
@@ -100,7 +98,7 @@
   });
   document.addEventListener('keydown', function (evt) {
     var successMessage = document.querySelector('.success');
-    if (evt.keyCode === window.data.Code.ESC) {
+    if (evt.keyCode === window.data.KeyCode.ESC) {
       if (successMessage) {
         successMessage.remove();
       }
@@ -122,7 +120,7 @@
       errorMessage.remove();
     });
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.data.Code.ESC) {
+      if (evt.keyCode === window.data.KeyCode.ESC) {
         errorMessage.remove();
       }
     });
@@ -142,7 +140,7 @@
   var checkboxInput = document.querySelectorAll('input[type = checkbox]');
   checkboxInput.forEach(function (item) {
     item.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.data.Code.ENTER) {
+      if (evt.keyCode === window.data.KeyCode.ENTER) {
         evt.preventDefault();
         item.checked = !item.checked;
         var e = new Event('change', {bubbles: true});

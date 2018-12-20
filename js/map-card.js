@@ -50,12 +50,12 @@
     }
 
     var photoList = cardInfo.querySelector('.popup__photos');
-    if ('photos' in advertisement.offer) {
+    if ('photos' in advertisement.offer && advertisement.offer.photos.length > 0) {
       var photo = photoList.querySelector('img');
-      photo.src = window.data.PHOTOS_LIST[0];
-      for (i = 1; i < window.data.PHOTOS_LIST.length; i++) {
+      photo.src = advertisement.offer.photos[0];
+      for (i = 1; i < advertisement.offer.photos.length; i++) {
         var nextPhoto = photo.cloneNode(true);
-        nextPhoto.src = window.data.PHOTOS_LIST[i];
+        nextPhoto.src = advertisement.offer.photos[i];
         photoList.appendChild(nextPhoto);
       }
     } else {
@@ -89,7 +89,7 @@
         window.page.deleteMapCard();
       });
       document.addEventListener('keydown', function (evt) {
-        if (evt.keyCode === window.data.Code.ESC) {
+        if (evt.keyCode === window.data.KeyCode.ESC) {
           window.page.deleteMapCard();
         }
       });

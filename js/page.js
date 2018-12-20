@@ -52,6 +52,8 @@
       window.form.disableElements(featuresFilter);
       form.reset();
       filtersForm.reset();
+      window.photos.clearAvatar();
+      window.photos.clearPhotos();
       priceOption.placeholder = DEFAULT_PRICE_PLACEHOLDER;
       priceOption.min = DEFAULT_PRICE_MIN;
       pinButton.style.top = MAIN_PIN_TOP + 'px';
