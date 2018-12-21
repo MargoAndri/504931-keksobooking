@@ -1,7 +1,13 @@
 'use strict';
 
-
 (function () {
+  var MAP_LEFT_GAP = 25;
+  var MAP_TOP_GAP = 70;
+  var LOW_PRICE = 1000;
+  var HIGH_PRICE = 50000;
+  var TOP_LEFT_LIMIT = 130;
+  var TOP_RIGHT_LIMIT = 630;
+  var LEFT_LIMIT = 32;
   var map = document.querySelector('.map');
   var pinButton = document.querySelector('.map__pin--main');
   var filtersForm = document. querySelector('.map__filters');
@@ -11,13 +17,6 @@
   var housingGuestsNumber = document.querySelector('#housing-guests');
   var housingFeatures = document.querySelectorAll('.map__checkbox');
   var loadedAdvertisements = [];
-  var MAP_LEFT_GAP = 25;
-  var MAP_TOP_GAP = 70;
-  var LOW_PRICE = 1000;
-  var HIGH_PRICE = 50000;
-  var TOP_LEFT_LIMIT = 130;
-  var TOP_RIGHT_LIMIT = 630;
-  var LEFT_LIMIT = 32;
   /**
    * @param {Object} advertisement
    * @param {Object} advertisement.author

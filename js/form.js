@@ -4,6 +4,8 @@
 (function () {
   var LEFT_GAP = 32;
   var TOP_GAP = 84;
+  var MAX_ROOM_CAPACITY = 100;
+  var MIN_ROOM_CAPACITY = 0;
   window.form = {
     // Неактивное состояние полей формы
     /**
@@ -38,9 +40,9 @@
   var checkRoomCapacity = function () {
     var roomNumberValue = parseInt(roomNumber.value, 10);
     var roomCapacityValue = parseInt(roomCapacity.value, 10);
-    if (roomNumberValue < roomCapacityValue || roomNumberValue !== 100 && roomCapacityValue === 0) {
+    if (roomNumberValue < roomCapacityValue || roomNumberValue !== MAX_ROOM_CAPACITY && roomCapacityValue === MIN_ROOM_CAPACITY) {
       roomCapacity.setCustomValidity('Нужно больше комнат.');
-    } else if (roomNumberValue === 100 && roomCapacityValue !== 0) {
+    } else if (roomNumberValue === MAX_ROOM_CAPACITY && roomCapacityValue !== MIN_ROOM_CAPACITY) {
       roomCapacity.setCustomValidity('Тут проводятся вечеринки!');
     } else {
       roomCapacity.setCustomValidity('');
