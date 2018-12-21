@@ -89,7 +89,7 @@
         window.page.deleteMapCard();
       });
       document.addEventListener('keydown', function (evt) {
-        if (evt.keyCode === window.data.KeyCode.ESC) {
+        if (evt.code === window.data.KeyCode.ESC) {
           window.page.deleteMapCard();
         }
       });

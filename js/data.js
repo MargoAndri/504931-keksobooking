@@ -13,8 +13,8 @@
       'flat': 1000
     },
     KeyCode: {
-      ESC: 27,
-      ENTER: 13
+      ESC: 'Escape',
+      ENTER: 'Enter'
     }
   };
 

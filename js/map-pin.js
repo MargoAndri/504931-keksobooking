@@ -73,7 +73,7 @@
     }
     if (housingRoom.value !== 'any') {
       advWithOffer = advWithOffer.filter(function (item) {
-        return item.offer.rooms === housingRoom.value;
+        return item.offer.rooms === parseInt(housingRoom.value, 10);
       });
     }
     if (housingGuestsNumber.value !== 'any') {
@@ -187,7 +187,6 @@
   var onSuccessLoad = function (adv) {
     loadedAdvertisements = adv;
     var filtered = filterAdvertisement(loadedAdvertisements);
-    console.log(filtered);
     renderPins(filtered);
     activateFilterForm();
   };
