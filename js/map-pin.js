@@ -170,7 +170,7 @@
      */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      window.backend.load(successHandler, alert);
+      window.backend.load(onSuccessLoad, alert);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       window.form.updateAddressField();
@@ -184,9 +184,10 @@
   /**
    * @param {Array} adv
    */
-  var successHandler = function (adv) {
+  var onSuccessLoad = function (adv) {
     loadedAdvertisements = adv;
     var filtered = filterAdvertisement(loadedAdvertisements);
+    console.log(filtered);
     renderPins(filtered);
     activateFilterForm();
   };
