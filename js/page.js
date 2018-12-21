@@ -16,7 +16,7 @@
         window.mapCard.renderAdvCard(advertisement);
       });
       pin.addEventListener('keydown', function (evt) {
-        if (evt.code === window.data.KeyCode.ENTER) {
+        if (evt.code === window.data.KEY_CODE.ENTER) {
           window.mapCard.renderAdvCard(advertisement);
         }
       });

@@ -6,6 +6,10 @@
   var TOP_GAP = 84;
   var MAX_ROOM_CAPACITY = 100;
   var MIN_ROOM_CAPACITY = 0;
+  var address = document.querySelector('#address');
+  var pinButton = document.querySelector('.map__pin--main');
+  var successTemplate = document.querySelector('#success');
+  var errorTemplate = document.querySelector('#error');
   window.form = {
     // Неактивное состояние полей формы
     /**
@@ -25,8 +29,6 @@
       });
     },
     updateAddressField: function () {
-      var address = document.querySelector('#address');
-      var pinButton = document.querySelector('.map__pin--main');
       var buttonX = parseInt(pinButton.style.left.replace('px', ''), 10) + LEFT_GAP;
       var buttonY = parseInt(pinButton.style.top.replace('px', ''), 10) + TOP_GAP;
       address.value = buttonX + ', ' + buttonY;
@@ -55,8 +57,8 @@
   var priceOption = document.querySelector('#price');
 
   flatType.addEventListener('change', function () {
-    priceOption.min = window.data.flatTypeToMinPrice[flatType.value];
-    priceOption.placeholder = window.data.flatTypeToMinPrice[flatType.value];
+    priceOption.min = window.data.FLAT_TYPE_MIN_PRICE[flatType.value];
+    priceOption.placeholder = window.data.FLAT_TYPE_MIN_PRICE[flatType.value];
   });
 
   // Синхронизация время заезда и выезда
@@ -86,46 +88,55 @@
   });
 
   var successHandler = function () {
-    var successTemplate = document.querySelector('#success');
     var success = document.importNode(successTemplate.content, true);
     var main = document.querySelector('main');
     main.appendChild(success);
-  };
-
-  document.addEventListener('click', function () {
     var successMessage = document.querySelector('.success');
-    if (successMessage) {
-      successMessage.remove();
-    }
-  });
-  document.addEventListener('keydown', function (evt) {
-    var successMessage = document.querySelector('.success');
-    if (evt.code === window.data.KeyCode.ESC) {
+    var removeSuccessMessage = function () {
       if (successMessage) {
         successMessage.remove();
       }
-    }
-  });
+    };
+    var clickHandler = function () {
+      removeSuccessMessage();
+      document.removeEventListener('click', clickHandler);
+      document.removeEventListener('keydown', escapeHandler);
+    };
+    var escapeHandler = function (evt) {
+      if (evt.code === window.data.KEY_CODE.ESC) {
+        removeSuccessMessage();
+        document.removeEventListener('keydown', escapeHandler);
+        document.removeEventListener('click', clickHandler);
+      }
+    };
+    document.addEventListener('click', clickHandler);
+    document.addEventListener('keydown', escapeHandler);
+  };
 
   var errorHandler = function () {
-    var errorTemplate = document.querySelector('#error');
     var error = document.importNode(errorTemplate.content, true);
     var main = document.querySelector('main');
     main.appendChild(error);
 
     var errorButton = document.querySelector('.error__button');
     var errorMessage = document.querySelector('.error');
+    var clickHandler = function () {
+      errorMessage.remove();
+      document.removeEventListener('click', clickHandler);
+      document.removeEventListener('keydown', escapeHandler);
+    };
+    var escapeHandler = function (evt) {
+      if (evt.code === window.data.KEY_CODE.ESC) {
+        errorMessage.remove();
+        document.removeEventListener('keydown', escapeHandler);
+        document.removeEventListener('click', clickHandler);
+      }
+    };
     errorButton.addEventListener('click', function () {
       errorMessage.remove();
     });
-    document.addEventListener('click', function () {
-      errorMessage.remove();
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.code === window.data.KeyCode.ESC) {
-        errorMessage.remove();
-      }
-    });
+    document.addEventListener('click', clickHandler);
+    document.addEventListener('keydown', escapeHandler);
   };
 
   var form = document.querySelector('.ad-form');
@@ -142,7 +153,7 @@
   var checkboxInput = document.querySelectorAll('input[type = checkbox]');
   checkboxInput.forEach(function (item) {
     item.addEventListener('keydown', function (evt) {
-      if (evt.code === window.data.KeyCode.ENTER) {
+      if (evt.code === window.data.KEY_CODE.ENTER) {
         evt.preventDefault();
         item.checked = !item.checked;
         var e = new Event('change', {bubbles: true});
