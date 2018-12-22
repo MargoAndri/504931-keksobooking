@@ -104,11 +104,13 @@
     var template = document.querySelector('#pin');
     var mapPins = document.querySelector('.map__pins');
     var allPins = document.querySelectorAll('.map__pin');
+    var fragment = document.createDocumentFragment();
     if (allPins.length === 1) {
       for (var i = 0; i < advertisements.length; i++) {
         var pin = generatePin(advertisements[i], template);
-        mapPins.appendChild(pin);
+        fragment.appendChild(pin);
       }
+      mapPins.appendChild(fragment);
     }
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 1; i < mapPin.length; i++) {

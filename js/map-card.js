@@ -53,11 +53,12 @@
     if ('photos' in advertisement.offer && advertisement.offer.photos.length > 0) {
       var photo = photoList.querySelector('img');
       photo.src = advertisement.offer.photos[0];
-      for (var i = 1; i < advertisement.offer.photos.length; i++) {
+      var copyAdvertisementPhotos = advertisement.offer.photos.slice(1);
+      copyAdvertisementPhotos.forEach(function (element) {
         var nextPhoto = photo.cloneNode(true);
-        nextPhoto.src = advertisement.offer.photos[i];
+        nextPhoto.src = element;
         photoList.appendChild(nextPhoto);
-      }
+      });
     } else {
       photoList.remove();
     }
